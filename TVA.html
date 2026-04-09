@@ -4,368 +4,204 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What Your Invoice Should Be</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg: #F5F2ED;
-    --ink: #1A1A18;
-    --rule: #C8C3BA;
-    --accent: #D4380D;
-    --accent-light: #FFF1EC;
-    --green: #1A6B3A;
-    --green-light: #EBF5EF;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
+:root {
+  --bg: #F5F2ED;
+  --ink: #1A1A18;
+  --rule: #C8C3BA;
+  --accent: #D4380D;
+  --green: #1A6B3A;
+  --green-light: #EBF5EF;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-  }
+body {
+  background: var(--bg);
+  font-family: var(--sans);
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
 
-  .page {
-    width: 100%;
-    max-width: 560px;
-  }
+.page {
+  max-width: 560px;
+  width: 100%;
+}
 
-  /* Header */
-  .header {
-    border-top: 3px solid var(--ink);
-    border-bottom: 1px solid var(--rule);
-    padding: 1.5rem 0 1.2rem;
-    margin-bottom: 2.5rem;
-  }
+/* Header */
+.header {
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}
 
-  .header-label {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
+.header-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
 
-  h1 {
-    font-family: var(--mono);
-    font-weight: 600;
-    font-size: 1.35rem;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-  }
+h1 {
+  font-family: var(--mono);
+  font-size: 1.4rem;
+}
 
-  .subtitle {
-    margin-top: 0.6rem;
-    font-size: 0.82rem;
-    font-weight: 300;
-    color: #666;
-    line-height: 1.5;
-  }
+.subtitle {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
 
-  /* Input section */
-  .field-label {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #888;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
+/* Input */
+.input-row {
+  display: flex;
+  border: 1.5px solid var(--ink);
+  background: white;
+}
 
-  .input-row {
-    display: flex;
-    align-items: stretch;
-    border: 1.5px solid var(--ink);
-    background: white;
-    transition: box-shadow 0.15s;
-  }
+.currency {
+  background: var(--ink);
+  color: white;
+  padding: 0.8rem;
+  font-family: var(--mono);
+}
 
-  .input-row:focus-within {
-    box-shadow: 4px 4px 0 var(--ink);
-  }
+input {
+  flex: 1;
+  border: none;
+  padding: 0.8rem;
+  font-size: 1.2rem;
+  font-family: var(--mono);
+}
 
-  .currency-badge {
-    font-family: var(--mono);
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0 1rem;
-    background: var(--ink);
-    color: var(--bg);
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.05em;
-  }
+/* Result */
+.result {
+  margin-top: 1.5rem;
+  display: none;
+}
 
-  input[type="number"] {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-family: var(--mono);
-    font-size: 1.4rem;
-    font-weight: 500;
-    padding: 0.85rem 1rem;
-    background: transparent;
-    color: var(--ink);
-    width: 100%;
-    -moz-appearance: textfield;
-  }
+.result.visible {
+  display: block;
+}
 
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+.card {
+  background: var(--green-light);
+  border: 1px solid var(--green);
+  padding: 1.2rem;
+}
 
-  input::placeholder { color: #CCC; }
+.amount {
+  font-size: 2rem;
+  font-family: var(--mono);
+  color: var(--green);
+}
 
-  /* Result */
-  .result-block {
-    margin-top: 1.5rem;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-  }
+.breakdown {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
 
-  .result-block.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-  }
-
-  .result-card {
-    background: var(--green-light);
-    border: 1.5px solid var(--green);
-    padding: 1.4rem 1.5rem;
-  }
-
-  .result-label {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 0.4rem;
-  }
-
-  .result-amount {
-    font-family: var(--mono);
-    font-size: 2.4rem;
-    font-weight: 600;
-    color: var(--green);
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-
-  .result-amount span {
-    font-size: 1rem;
-    font-weight: 400;
-    margin-right: 0.3rem;
-  }
-
-  .breakdown {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #BED9C8;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-
-  .breakdown-item {}
-
-  .breakdown-key {
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #5A8A6E;
-    margin-bottom: 0.2rem;
-  }
-
-  .breakdown-val {
-    font-family: var(--mono);
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--green);
-  }
-
-  /* Equation hint */
-  .equation-box {
-    margin-top: 1.5rem;
-    border: 1px solid var(--rule);
-    padding: 1rem 1.2rem;
-    background: white;
-  }
-
-  .equation-box-label {
-    font-family: var(--mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #AAA;
-    margin-bottom: 0.5rem;
-  }
-
-  .equation {
-    font-family: var(--mono);
-    font-size: 0.82rem;
-    color: #555;
-    line-height: 1.8;
-  }
-
-  .eq-highlight {
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  /* Copy button */
-  .copy-btn {
-    display: block;
-    width: 100%;
-    margin-top: 0.75rem;
-    padding: 0.7rem;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: var(--ink);
-    color: var(--bg);
-    border: none;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-
-  .copy-btn:hover { background: #333; }
-  .copy-btn:active { background: var(--accent); }
-
-  /* Footer */
-  .footer {
-    margin-top: 2.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--rule);
-    font-size: 0.72rem;
-    color: #AAA;
-    font-family: var(--mono);
-    display: flex;
-    justify-content: space-between;
-  }
+button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.7rem;
+  background: var(--ink);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 </style>
 </head>
+
 <body>
 <div class="page">
 
-  <header class="header">
+  <div class="header">
     <div class="header-label">Finance Tool</div>
-    <h1>What Your Invoice<br>Should Be</h1>
+    <h1>What Your Invoice Should Be</h1>
     <p class="subtitle">
-      Budget figures include 8.1% TVA. Enter the <strong>budgeted amount</strong>
-      to find the correct <strong>pre-tax invoice amount</strong> to give your contractor.
+      Enter a budget that includes 8.1% TVA to get the correct invoice amount.
     </p>
-  </header>
-
-  <div class="input-section">
-    <label class="field-label" for="budget">Budgeted amount (incl. TVA)</label>
-    <div class="input-row">
-      <div class="currency-badge">CHF</div>
-      <input
-        type="number"
-        id="budget"
-        placeholder="0.00"
-        min="0"
-        step="0.01"
-        autocomplete="off"
-        oninput="calculate(this.value)"
-      />
-    </div>
   </div>
 
-  <div class="result-block" id="result">
-    <div class="result-card">
-      <div class="result-label">Tell your contractor to invoice</div>
-      <div class="result-amount">
-        <span>CHF</span><span id="invoice-amount">—</span>
-      </div>
+  <div class="input-row">
+    <div class="currency">CHF</div>
+    <input id="budget" placeholder="0.00">
+  </div>
+
+  <div class="result" id="result">
+    <div class="card">
+      <div>Invoice (excl. TVA)</div>
+      <div class="amount" id="invoice">—</div>
+
       <div class="breakdown">
-        <div class="breakdown-item">
-          <div class="breakdown-key">TVA (8.1%)</div>
-          <div class="breakdown-val">CHF <span id="tva-amount">—</span></div>
-        </div>
-        <div class="breakdown-item">
-          <div class="breakdown-key">Invoice + TVA</div>
-          <div class="breakdown-val">CHF <span id="total-check">—</span></div>
-        </div>
+        TVA: CHF <span id="tva">—</span><br>
+        Total: CHF <span id="total">—</span>
       </div>
     </div>
-    <button class="copy-btn" id="copy-btn" onclick="copyAmount()">
-      Copy invoice amount
-    </button>
-  </div>
 
-  <div class="equation-box">
-    <div class="equation-box-label">How it works</div>
-    <div class="equation">
-      budget = invoice + invoice × 8.1%<br>
-      budget = invoice × <span class="eq-highlight">1.081</span><br>
-      invoice = budget ÷ <span class="eq-highlight">1.081</span>
-    </div>
+    <button onclick="copy()">Copy invoice amount</button>
   </div>
-
-  <footer class="footer">
-    <span>TVA rate: 8.1%</span>
-    <span>x + x×0.081 = budget</span>
-  </footer>
 
 </div>
 
 <script>
-  const TVA = 0.081;
-  let currentAmount = null;
+const TVA = 0.081;
+let current = null;
 
-  function fmt(n) {
-    return n.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function roundCHF(n) {
+  return Math.round((n + Number.EPSILON) * 100) / 100;
+}
+
+function fmt(n) {
+  return n.toLocaleString('de-CH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function clean(val) {
+  return val.replace(/'/g, '').replace(',', '.');
+}
+
+document.getElementById('budget').addEventListener('input', (e) => {
+  const val = clean(e.target.value);
+  const budget = parseFloat(val);
+
+  if (!val || isNaN(budget)) {
+    document.getElementById('result').classList.remove('visible');
+    return;
   }
 
-  function calculate(val) {
-    const budget = parseFloat(val);
-    const resultBlock = document.getElementById('result');
+  const invoice = roundCHF(budget / (1 + TVA));
+  const tva = roundCHF(budget - invoice);
 
-    if (!val || isNaN(budget) || budget <= 0) {
-      resultBlock.classList.remove('visible');
-      currentAmount = null;
-      return;
-    }
+  document.getElementById('invoice').textContent = "CHF " + fmt(invoice);
+  document.getElementById('tva').textContent = fmt(tva);
+  document.getElementById('total').textContent = fmt(budget);
 
-    const invoice = budget / (1 + TVA);
-    const tva = budget - invoice;
+  current = fmt(invoice);
+  document.getElementById('result').classList.add('visible');
+});
 
-    document.getElementById('invoice-amount').textContent = fmt(invoice);
-    document.getElementById('tva-amount').textContent = fmt(tva);
-    document.getElementById('total-check').textContent = fmt(budget);
+function copy() {
+  if (!current) return;
 
-    currentAmount = invoice;
-    resultBlock.classList.add('visible');
-
-    // Reset copy button text
-    document.getElementById('copy-btn').textContent = 'Copy invoice amount';
-  }
-
-  function copyAmount() {
-    if (currentAmount === null) return;
-    const text = currentAmount.toFixed(2);
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById('copy-btn');
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => { btn.textContent = 'Copy invoice amount'; }, 2000);
-    });
-  }
+  navigator.clipboard.writeText(current).then(() => {
+    alert("Copied: " + current);
+  });
+}
 </script>
+
 </body>
 </html>
